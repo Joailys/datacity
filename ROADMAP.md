@@ -2,9 +2,13 @@
 
 > Transformez la Google Search Console de votre site web en une métropole 3D interactive et en temps réel.
 
-## 🚀 Version Actuelle : `v2.0.4` (Production Ready)
+## 🚀 Version Actuelle : `v2.0.5` (Production Ready)
 
 ---
+
+### [v2.0.5] - Épuration de l'Interface Utilisateur & Suppression des Boutons Caméra
+- [x] **Épuration du HUD** : Suppression des boutons de contrôle de caméra (icône appareil photo et bouton TOP) de la barre de navigation.
+- [x] **Livraison continue** : Validation des tests, build de production, commit git, push GitHub et synchronisation VPS sur `https://city.lups.io`.
 
 ### [v2.0.4] - Déduplication & Consolidation des URLs GSC (Fusion des slashs finaux)
 - [x] **Consolidation Canonique des URLs** : Fusion des variantes d'URLs envoyées séparément par la Search Console (ex: `https://woofissimo.fr/` et `https://woofissimo.fr`).
