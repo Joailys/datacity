@@ -2,9 +2,13 @@
 
 > Transformez la Google Search Console de votre site web en une métropole 3D interactive et en temps réel.
 
-## 🚀 Version Actuelle : `v2.0.2` (Production Ready)
+## 🚀 Version Actuelle : `v2.0.3` (Production Ready)
 
 ---
+
+### [v2.0.3] - Correction de l'Intervalle de Dates API Search Analytics (GSC)
+- [x] **Calcul d'Intervalle Temporel Sécurisé** : Remplacement de la mutation `setDate()` par un calcul en millisecondes (`now - 31 days` à `now - 3 days`), éliminant l'erreur `Invalid date range` lors du chevauchement de début de mois.
+- [x] **Livraison continue** : Validation des tests, build de production, commit git, push GitHub et synchronisation VPS sur `https://city.lups.io`.
 
 ### [v2.0.2] - Intégration du Client ID Google Cloud Officiel & Déploiement VPS
 - [x] **Client ID Officiel Enregistré** : Intégration de l'ID Client officiel (`181176144243-4ldaisp7ejmu24ljq63mv90kqhda7gpm.apps.googleusercontent.com`) dans la configuration d'environnement `.env`.
