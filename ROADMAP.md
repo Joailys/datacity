@@ -2,9 +2,14 @@
 
 > Transformez la Google Search Console de votre site web en une métropole 3D interactive et en temps réel.
 
-## 🚀 Version Actuelle : `v2.0.3` (Production Ready)
+## 🚀 Version Actuelle : `v2.0.4` (Production Ready)
 
 ---
+
+### [v2.0.4] - Déduplication & Consolidation des URLs GSC (Fusion des slashs finaux)
+- [x] **Consolidation Canonique des URLs** : Fusion des variantes d'URLs envoyées séparément par la Search Console (ex: `https://woofissimo.fr/` et `https://woofissimo.fr`).
+- [x] **Agrégation des Métriques** : Somme automatique des clics et impressions et calcul de la moyenne pondérée des positions pour regrouper tout le trafic sur un seul et unique bâtiment.
+- [x] **Livraison continue** : Validation des tests, build de production, commit git, push GitHub et synchronisation VPS sur `https://city.lups.io`.
 
 ### [v2.0.3] - Correction de l'Intervalle de Dates API Search Analytics (GSC)
 - [x] **Calcul d'Intervalle Temporel Sécurisé** : Remplacement de la mutation `setDate()` par un calcul en millisecondes (`now - 31 days` à `now - 3 days`), éliminant l'erreur `Invalid date range` lors du chevauchement de début de mois.
