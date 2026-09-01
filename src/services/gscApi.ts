@@ -52,10 +52,12 @@ export async function fetchSitePagesAnalytics(
   accessToken: string,
   siteUrl: string
 ): Promise<PageData[]> {
-  const endDateObj = new Date();
-  endDateObj.setDate(endDateObj.getDate() - 2); // GSC data delay is ~2 days
-  const startDateObj = new Date();
-  startDateObj.setDate(endDateObj.getDate() - 28);
+  const now = Date.now();
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
+  // GSC data delay is ~3 days. Start date is 31 days ago.
+  const startDateObj = new Date(now - 31 * DAY_MS);
+  const endDateObj = new Date(now - 3 * DAY_MS);
 
   const formatDate = (d: Date) => d.toISOString().split('T')[0];
   const startDate = formatDate(startDateObj);
@@ -136,10 +138,11 @@ export async function fetchPageTopQueries(
   siteUrl: string,
   pageUrl: string
 ): Promise<any[]> {
-  const endDateObj = new Date();
-  endDateObj.setDate(endDateObj.getDate() - 2);
-  const startDateObj = new Date();
-  startDateObj.setDate(endDateObj.getDate() - 28);
+  const now = Date.now();
+  const DAY_MS = 24 * 60 * 60 * 1000;
+
+  const startDateObj = new Date(now - 31 * DAY_MS);
+  const endDateObj = new Date(now - 3 * DAY_MS);
 
   const formatDate = (d: Date) => d.toISOString().split('T')[0];
   const endpoint = `${GSC_BASE_URL}/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`;
