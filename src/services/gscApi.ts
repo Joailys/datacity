@@ -20,6 +20,29 @@ export function formatSiteDisplayName(siteUrl: string): string {
 }
 
 /**
+ * Normalizes a URL path by stripping trailing slashes (except for root "/").
+ */
+export function normalizeUrlPath(rawUrl: string): { fullUrl: string; normalizedPath: string } {
+  let path = '/';
+  try {
+    const parsed = new URL(rawUrl);
+    path = parsed.pathname;
+  } catch {
+    path = rawUrl;
+  }
+
+  // Remove trailing slash if not root
+  if (path.length > 1 && path.endsWith('/')) {
+    path = path.slice(0, -1);
+  }
+
+  return {
+    fullUrl: rawUrl,
+    normalizedPath: path || '/',
+  };
+}
+
+/**
  * Fetches verified sites for the authenticated user from Google Search Console API.
  */
 export async function fetchUserGscSites(accessToken: string): Promise<GscSiteEntry[]> {
@@ -47,6 +70,7 @@ export async function fetchUserGscSites(accessToken: string): Promise<GscSiteEnt
 
 /**
  * Queries 28-day performance data for all URLs of a specific site from Google Search Console API.
+ * Deduplicates and consolidates metrics for identical paths (e.g. "/" vs "/").
  */
 export async function fetchSitePagesAnalytics(
   accessToken: string,
@@ -55,7 +79,6 @@ export async function fetchSitePagesAnalytics(
   const now = Date.now();
   const DAY_MS = 24 * 60 * 60 * 1000;
 
-  // GSC data delay is ~3 days. Start date is 31 days ago.
   const startDateObj = new Date(now - 31 * DAY_MS);
   const endDateObj = new Date(now - 3 * DAY_MS);
 
@@ -89,22 +112,49 @@ export async function fetchSitePagesAnalytics(
   const data = await response.json();
   const rows = data.rows || [];
 
-  const pages: PageData[] = rows.map((row: any, idx: number) => {
-    const fullUrl = row.keys[0] || '';
-    let path = '/';
-    try {
-      const parsed = new URL(fullUrl);
-      path = parsed.pathname;
-    } catch {
-      path = fullUrl;
+  // Map to consolidate duplicate normalized paths (e.g. / vs /)
+  const pathMap = new Map<
+    string,
+    {
+      fullUrl: string;
+      path: string;
+      clicks: number;
+      impressions: number;
+      weightedPosSum: number;
     }
+  >();
+
+  rows.forEach((row: any) => {
+    const rawUrl = row.keys[0] || '';
+    const { fullUrl, normalizedPath } = normalizeUrlPath(rawUrl);
 
     const clicks = Math.round(row.clicks || 0);
     const impressions = Math.round(row.impressions || 0);
-    const ctr = parseFloat(((row.ctr || 0) * 100).toFixed(2));
-    const position = parseFloat(((row.position || 0)).toFixed(1));
+    const position = parseFloat((row.position || 0).toFixed(1));
 
-    const pageTitle = path === '/' || path === '' ? 'Accueil' : path.split('/').filter(Boolean).pop() || path;
+    const existing = pathMap.get(normalizedPath);
+    if (existing) {
+      existing.clicks += clicks;
+      existing.impressions += impressions;
+      existing.weightedPosSum += position * Math.max(impressions, 1);
+    } else {
+      pathMap.set(normalizedPath, {
+        fullUrl,
+        path: normalizedPath,
+        clicks,
+        impressions,
+        weightedPosSum: position * Math.max(impressions, 1),
+      });
+    }
+  });
+
+  const pages: PageData[] = Array.from(pathMap.values()).map((item, idx) => {
+    const { fullUrl, path, clicks, impressions, weightedPosSum } = item;
+    const ctr = impressions > 0 ? parseFloat(((clicks / impressions) * 100).toFixed(2)) : 0;
+    const avgPos = impressions > 0 ? parseFloat((weightedPosSum / impressions).toFixed(1)) : 10.0;
+
+    const pageTitle =
+      path === '/' || path === '' ? 'Accueil' : path.split('/').filter(Boolean).pop() || path;
     const district = extractDistrictFromUrl(path);
 
     return {
@@ -117,11 +167,19 @@ export async function fetchSitePagesAnalytics(
         clicks,
         impressions,
         ctr,
-        position,
+        position: avgPos,
       },
       history: [
-        { date: startDate, metrics: { clicks: Math.round(clicks * 0.7), impressions: Math.round(impressions * 0.7), ctr, position: position + 0.5 } },
-        { date: endDate, metrics: { clicks, impressions, ctr, position } },
+        {
+          date: startDate,
+          metrics: {
+            clicks: Math.round(clicks * 0.7),
+            impressions: Math.round(impressions * 0.7),
+            ctr,
+            position: avgPos + 0.5,
+          },
+        },
+        { date: endDate, metrics: { clicks, impressions, ctr, position: avgPos } },
       ],
       topKeywords: [],
     };
