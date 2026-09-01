@@ -2,9 +2,13 @@
 
 > Transformez la Google Search Console de votre site web en une métropole 3D interactive et en temps réel.
 
-## 🚀 Version Actuelle : `v2.0.5` (Production Ready)
+## 🚀 Version Actuelle : `v2.0.6` (Production Ready)
 
 ---
+
+### [v2.0.6] - Interception Automatique des Expirations de Session Google (HTTP 401)
+- [x] **Gestionnaire d'Expiration 1h** : Interception automatique des erreurs HTTP 401 (`UNAUTHENTICATED`), réinitialisation propre du jeton expiré et réaffichage immédiat du bouton de re-connexion Google en 1 clic.
+- [x] **Livraison continue** : Validation des tests, build de production, commit git, push GitHub et synchronisation VPS sur `https://city.lups.io`.
 
 ### [v2.0.5] - Épuration de l'Interface Utilisateur & Suppression des Boutons Caméra
 - [x] **Épuration du HUD** : Suppression des boutons de contrôle de caméra (icône appareil photo et bouton TOP) de la barre de navigation.
