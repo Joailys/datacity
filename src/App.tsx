@@ -24,7 +24,7 @@ export default function App() {
   const [apiError, setApiError] = useState<string | null>(null);
 
   const [metricMode, setMetricMode] = useState<'clicks' | 'impressions'>('clicks');
-  const [cameraPreset, setCameraPreset] = useState<'iso' | 'top' | 'drone'>('iso');
+  const [cameraPreset] = useState<'iso' | 'top' | 'drone'>('iso');
 
   const [selectedBuilding, setSelectedBuilding] = useState<Building3DState | null>(null);
   const [isMayorReportOpen, setIsMayorReportOpen] = useState(false);
@@ -168,8 +168,6 @@ export default function App() {
         onSelectSiteUrl={setSelectedSiteUrl}
         metricMode={metricMode}
         onToggleMetricMode={setMetricMode}
-        cameraPreset={cameraPreset}
-        onSelectCameraPreset={setCameraPreset}
         onOpenLeaderboard={() => setIsLeaderboardOpen(true)}
         onOpenMayorReport={() => setIsMayorReportOpen(true)}
         onOpenGscConnect={() => setIsGscConnectOpen(true)}

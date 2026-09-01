@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building2, Camera, Trophy, ScrollText, Key, Layers, Activity, Globe, LogOut, ChevronDown } from 'lucide-react';
+import { Building2, Trophy, ScrollText, Key, Layers, Activity, Globe, LogOut, ChevronDown } from 'lucide-react';
 import type { GscSiteEntry } from '../../types/seo';
 
 interface NavbarProps {
@@ -8,8 +8,6 @@ interface NavbarProps {
   onSelectSiteUrl: (siteUrl: string) => void;
   metricMode: 'clicks' | 'impressions';
   onToggleMetricMode: (mode: 'clicks' | 'impressions') => void;
-  cameraPreset: 'iso' | 'top' | 'drone';
-  onSelectCameraPreset: (preset: 'iso' | 'top' | 'drone') => void;
   onOpenLeaderboard: () => void;
   onOpenMayorReport: () => void;
   onOpenGscConnect: () => void;
@@ -24,8 +22,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectSiteUrl,
   metricMode,
   onToggleMetricMode,
-  cameraPreset,
-  onSelectCameraPreset,
   onOpenLeaderboard,
   onOpenMayorReport,
   onOpenGscConnect,
@@ -107,30 +103,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <Layers className="w-3.5 h-3.5" />
             Mode Impressions
-          </button>
-        </div>
-
-        <div className="h-5 w-px bg-amber-200 mx-1" />
-
-        {/* Camera Views */}
-        <div className="flex items-center gap-1">
-          <button
-            onClick={() => onSelectCameraPreset('iso')}
-            title="Vue Isométrique"
-            className={`p-1.5 rounded-lg text-xs transition-all ${
-              cameraPreset === 'iso' ? 'bg-amber-100 text-amber-900 border border-amber-300 font-bold' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <Camera className="w-4 h-4" />
-          </button>
-          <button
-            onClick={() => onSelectCameraPreset('top')}
-            title="Vue du Ciel (2D)"
-            className={`p-1.5 rounded-lg text-xs font-bold font-mono transition-all ${
-              cameraPreset === 'top' ? 'bg-amber-100 text-amber-900 border border-amber-300 font-bold' : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            TOP
           </button>
         </div>
       </div>
