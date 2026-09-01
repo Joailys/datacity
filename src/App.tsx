@@ -71,7 +71,14 @@ export default function App() {
         }
       } catch (err: any) {
         if (isMounted) {
-          setApiError(err.message || 'Échec de connexion à la Search Console API.');
+          const errMsg = err.message || '';
+          if (errMsg.includes('401') || errMsg.includes('UNAUTHENTICATED') || errMsg.includes('Invalid Credentials')) {
+            localStorage.removeItem('datacity_gsc_token');
+            setAccessToken(null);
+            setApiError('Votre session Google a expiré (durée 1h). Veuillez vous reconnecter en 1 clic.');
+          } else {
+            setApiError(errMsg || 'Échec de connexion à la Search Console API.');
+          }
         }
       }
     }
@@ -103,7 +110,14 @@ export default function App() {
         }
       } catch (err: any) {
         if (isMounted) {
-          setApiError(err.message || 'Erreur lors du chargement des données du site.');
+          const errMsg = err.message || '';
+          if (errMsg.includes('401') || errMsg.includes('UNAUTHENTICATED') || errMsg.includes('Invalid Credentials')) {
+            localStorage.removeItem('datacity_gsc_token');
+            setAccessToken(null);
+            setApiError('Votre session Google a expiré (durée 1h). Veuillez vous reconnecter en 1 clic.');
+          } else {
+            setApiError(errMsg || 'Erreur lors du chargement des données du site.');
+          }
         }
       } finally {
         if (isMounted) setIsLoadingPages(false);
