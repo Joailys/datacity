@@ -2,9 +2,14 @@
 
 > Transformez la Google Search Console de votre site web en une métropole 3D interactive et en temps réel.
 
-## 🚀 Version Actuelle : `v2.0.1` (Production Ready)
+## 🚀 Version Actuelle : `v2.0.2` (Production Ready)
 
 ---
+
+### [v2.0.2] - Intégration du Client ID Google Cloud Officiel & Déploiement VPS
+- [x] **Client ID Officiel Enregistré** : Intégration de l'ID Client officiel (`181176144243-4ldaisp7ejmu24ljq63mv90kqhda7gpm.apps.googleusercontent.com`) dans la configuration d'environnement `.env`.
+- [x] **Connexion 1-Clic Directe Sans Saisie** : Le bouton *"Accéder à la Page de Connexion Google"* envoie désormais directement l'utilisateur sur `accounts.google.com` sans aucune popup de configuration intermédiaire.
+- [x] **Déploiement VPS OVH `city.lups.io`** : Build de production compilé et synchronisé sur `/var/www/datacity/dist` avec serveur Nginx configuré.
 
 ### [v2.0.1] - Redirection Directe vers accounts.google.com (Zéro saisie manuelle)
 - [x] **Flux d'Authentification Google Direct** : Le bouton principal *"Accéder à la Page de Connexion Google"* redirige désormais directement l'utilisateur vers la page officielle de connexion Google (`accounts.google.com/o/oauth2/v2/auth`).

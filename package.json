@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "test": "vitest run",
+    "deploy": "npm test && npm run build && git add . && git commit -m \"feat: deployment update DataCity 3D\" && git push origin main && rsync -avz --delete dist/ ubuntu@164.132.79.101:/var/www/datacity/dist/",
     "lint": "oxlint",
     "preview": "vite preview"
   },
